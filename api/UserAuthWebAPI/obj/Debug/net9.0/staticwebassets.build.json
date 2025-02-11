@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "8cza02zLKAyggdEj05ba2THKhTLHVWceKTo347gOOfs=",
+  "Source": "UserAuthWebAPI",
+  "BasePath": "_content/UserAuthWebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
