@@ -57,6 +57,7 @@ app.UseCors(x => x
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 app.MapControllers();
 
 app.Run();
