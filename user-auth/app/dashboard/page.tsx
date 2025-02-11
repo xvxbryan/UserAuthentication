@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-
 export default async function Dashboard() {
     try {
         const res = await fetch(

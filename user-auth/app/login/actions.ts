@@ -34,12 +34,13 @@ export async function login(prevState: any, formData: FormData) {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(result.data),
         });
 
         if(response.ok) {
             const loginRes: ILoginRes = await response.json();
-            await createSession(loginRes);
+            // await createSession(loginRes);
         } else {
             const errorText = await response.text();
             return { errors: { general: errorText } };
@@ -50,7 +51,7 @@ export async function login(prevState: any, formData: FormData) {
         return { errors: { general: "Unexpected error occured. Please try again." } };
     }
 
-    redirect("/dashboard");
+    // redirect("/dashboard");
 }
 
 export async function logout() {
