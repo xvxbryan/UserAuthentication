@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\Bryan\\NextJsTutorial\\UserAuthentication\\api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|c:\\users\\bryan\\nextjstutorial\\userauthentication\\api\\userauthwebapi\\repositories\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|solutionrelative:userauthwebapi\\repositories\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|c:\\users\\bryan\\nextjstutorial\\userauthentication\\api\\userauthwebapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|solutionrelative:userauthwebapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|c:\\users\\bryan\\nextjstutorial\\userauthentication\\api\\userauthwebapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|solutionrelative:userauthwebapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|c:\\users\\bryan\\nextjstutorial\\userauthentication\\api\\userauthwebapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|solutionrelative:userauthwebapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|c:\\users\\bryan\\nextjstutorial\\userauthentication\\api\\userauthwebapi\\repositories\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{49CD7693-4C26-4079-97AB-9882AAF55965}|UserAuthWebAPI\\UserAuthWebAPI.csproj|solutionrelative:userauthwebapi\\repositories\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -32,33 +32,33 @@
               "RelativeDocumentMoniker": "UserAuthWebAPI\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\Bryan\\NextJsTutorial\\UserAuthentication\\api\\UserAuthWebAPI\\Controllers\\AuthController.cs",
               "RelativeToolTip": "UserAuthWebAPI\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAcwFsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAuwEcAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-11T00:39:34.652Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "AuthService.cs",
               "DocumentMoniker": "C:\\Users\\Bryan\\NextJsTutorial\\UserAuthentication\\api\\UserAuthWebAPI\\Repositories\\AuthService.cs",
               "RelativeDocumentMoniker": "UserAuthWebAPI\\Repositories\\AuthService.cs",
               "ToolTip": "C:\\Users\\Bryan\\NextJsTutorial\\UserAuthentication\\api\\UserAuthWebAPI\\Repositories\\AuthService.cs",
               "RelativeToolTip": "UserAuthWebAPI\\Repositories\\AuthService.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAADwv18AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAIA2wBwAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-11T00:39:32.071Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Bryan\\NextJsTutorial\\UserAuthentication\\api\\UserAuthWebAPI\\Program.cs",
               "RelativeDocumentMoniker": "UserAuthWebAPI\\Program.cs",
               "ToolTip": "C:\\Users\\Bryan\\NextJsTutorial\\UserAuthentication\\api\\UserAuthWebAPI\\Program.cs",
               "RelativeToolTip": "UserAuthWebAPI\\Program.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAgwGEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACEAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-10T23:54:11.917Z",
               "EditorCaption": ""

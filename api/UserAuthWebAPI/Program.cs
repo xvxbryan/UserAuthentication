@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
@@ -19,25 +20,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options => {
-//        options.TokenValidationParameters = new TokenValidationParameters {
-//            ValidateIssuer = true,
-//            ValidIssuer = builder.Configuration["AppSettings:Issuer"],
-//            ValidateAudience = true,
-//            ValidAudience = builder.Configuration["AppSettings:Audience"],
-//            ValidateLifetime = true,
-//            IssuerSigningKey = new SymmetricSecurityKey(
-//                Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!)),
-//            ValidateIssuerSigningKey = true
-//        };
-//    });
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         options.Events = new JwtBearerEvents {
             OnMessageReceived = context => {
-                var token = context.Request.Cookies["session"];  // Change "YourCookieName" to the actual cookie name
-                Console.WriteLine(context.Request.Cookies["session"]);
+                var token = context.Request.Cookies["session"];
                 if (!string.IsNullOrEmpty(token)) {
                     context.Token = token;
                 }
@@ -60,18 +47,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddCors(options => {
-    options.AddPolicy("AllowSpecificOrigin",
-        policy => {
-            policy.WithOrigins("http://localhost:3000")
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials();
-        });
+    options.AddPolicy("AllowSpecificOrigin", policy => {
+        policy.WithOrigins("https://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -79,19 +64,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseCors(x => x
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials()
-    .WithOrigins("http://localhost:3000")
-    .SetIsOriginAllowed(origin => true)
-);
-
+app.UseRouting();
+app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
-
-
 app.MapControllers();
 
 app.Run();

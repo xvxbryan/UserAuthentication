@@ -32,16 +32,14 @@ namespace UserAuthWebAPI.Controllers {
                 return BadRequest("Invalid username or password");
             }
 
-            var token = result.AccessToken; 
+            var token = result.AccessToken;
 
-            var cookieOptions = new CookieOptions {
+            Response.Cookies.Append("session", token, new CookieOptions {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(1)
-            };
-
-            Response.Cookies.Append("session", token, cookieOptions);
+            });
 
             return Ok(result);
         }
@@ -71,21 +69,19 @@ namespace UserAuthWebAPI.Controllers {
         [Authorize]
         [HttpGet("dashboard")]
         public IActionResult Dashboard() {
-            Console.WriteLine("Test");
-            return Ok("dale");
-            //var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
 
-            //if (identity == null || !identity.IsAuthenticated) {
-            //    Console.WriteLine("Unauthorized access attempt.");
-            //    return Unauthorized("Invalid token");
-            //}
+            if (identity == null || !identity.IsAuthenticated) {
+                Console.WriteLine("Unauthorized access attempt.");
+                return Unauthorized("Invalid token");
+            }
 
-            //var userId = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //var username = identity.FindFirst(ClaimTypes.Name)?.Value;
-            //var role = identity.FindFirst(ClaimTypes.Role)?.Value;
+            var userId = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var username = identity.FindFirst(ClaimTypes.Name)?.Value;
+            var role = identity.FindFirst(ClaimTypes.Role)?.Value;
 
-            //Console.WriteLine($"User: {username}, Role: {role}");
-            //return Ok(new { userId, username, role });
+            Console.WriteLine($"User: {username}, Role: {role}");
+            return Ok(new { userId, username, role });
         }
     }
 }
