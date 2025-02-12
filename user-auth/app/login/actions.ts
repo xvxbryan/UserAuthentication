@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { createSession } from "../lib/session";
-import { redirect } from "next/navigation";
 import ILoginRes from "../interfaces/ILoginRes";
 
 type LoginErrors = {
@@ -38,20 +37,19 @@ export async function login(prevState: any, formData: FormData) {
             body: JSON.stringify(result.data),
         });
 
-        if(response.ok) {
+        if (response.ok) {
             const loginRes: ILoginRes = await response.json();
             await createSession(loginRes);
+            return { success: true, redirectTo: "/dashboard" };
+
         } else {
             const errorText = await response.text();
             return { errors: { general: errorText } };
         }
-        
     } catch (error) {
         console.log("Error: ", error);
         return { errors: { general: "Unexpected error occured. Please try again." } };
     }
-
-    redirect("/dashboard");
 }
 
 export async function logout() {

@@ -1,17 +1,25 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { login } from "./actions";
 import LogRegBackground from "../components/LogRegBackground";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
+    const router = useRouter();
     const [state, loginAction] = useActionState(login, undefined);
 
     const [formData, setFormData] = useState({
         username: "",
         passwordHash: "",
     });
+
+    useEffect(() => {
+        if (state?.success && state.redirectTo) {
+            router.push(state.redirectTo);
+        }
+    }, [state, router]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));

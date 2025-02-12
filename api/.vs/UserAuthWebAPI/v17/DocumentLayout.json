@@ -32,7 +32,7 @@
               "RelativeDocumentMoniker": "UserAuthWebAPI\\Controllers\\AuthController.cs",
               "ToolTip": "C:\\Users\\Bryan\\NextJsTutorial\\UserAuthentication\\api\\UserAuthWebAPI\\Controllers\\AuthController.cs",
               "RelativeToolTip": "UserAuthWebAPI\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAD4AAAAAAAAAAAAuwEcAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAuwE8AAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-11T00:39:34.652Z",
               "EditorCaption": ""
@@ -47,8 +47,7 @@
               "RelativeToolTip": "UserAuthWebAPI\\Repositories\\AuthService.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAIA2wBwAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T00:39:32.071Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-11T00:39:32.071Z"
             },
             {
               "$type": "Document",
@@ -60,8 +59,7 @@
               "RelativeToolTip": "UserAuthWebAPI\\Program.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAABsAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T23:54:11.917Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T23:54:11.917Z"
             }
           ]
         }
