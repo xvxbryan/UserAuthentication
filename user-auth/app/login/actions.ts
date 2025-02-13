@@ -1,29 +1,24 @@
 "use server";
 
-import { z } from "zod";
 import { createSession } from "../lib/session";
 import ILoginRes from "../interfaces/ILoginRes";
+import IActionResponse from "../interfaces/IActionResponse";
+import ILoginFormData from "../interfaces/ILoginFormData";
+import { loginSchema } from "./auth-validation";
 
-type LoginErrors = {
-    username?: string[];
-    passwordHash?: string[];
-    general?: string;
-};
+export async function login(_: any, formData: FormData): Promise<IActionResponse<ILoginFormData>> {
+    const rawData: ILoginFormData = {
+        username: formData.get("username") as string,
+        passwordHash: formData.get("passwordHash") as string
+    }
 
-const loginSchema = z.object({
-    username: z.string().nonempty(),
-    passwordHash: z
-        .string()
-        .min(8, { message: "Password must be at least 8 characters" })
-        .trim(),
-});
-
-export async function login(prevState: any, formData: FormData) {
-    const result = loginSchema.safeParse(Object.fromEntries(formData));
+    const result = loginSchema.safeParse(rawData);
 
     if (!result.success) {
         return {
-            errors: result.error.flatten().fieldErrors as LoginErrors
+            inputs: rawData,
+            success: false,
+            errors: result.error.flatten().fieldErrors
         };
     }
 
@@ -40,15 +35,15 @@ export async function login(prevState: any, formData: FormData) {
         if (response.ok) {
             const loginRes: ILoginRes = await response.json();
             await createSession(loginRes);
-            return { success: true, redirectTo: "/dashboard" };
+            return { success: true, inputs: rawData, redirectTo: "/dashboard" };
 
         } else {
             const errorText = await response.text();
-            return { errors: { general: errorText } };
+            return { success: false, message: errorText, inputs: rawData, }
         }
     } catch (error) {
         console.log("Error: ", error);
-        return { errors: { general: "Unexpected error occured. Please try again." } };
+        return { success: false, message: "Unexpected error occured. Please try again.", inputs: rawData, }
     }
 }
 
