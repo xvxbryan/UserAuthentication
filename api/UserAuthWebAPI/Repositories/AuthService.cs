@@ -12,6 +12,30 @@ using UserAuthWebAPI.Models;
 
 namespace UserAuthWebAPI.Repositories {
     public class AuthService(AppDbContext context, IConfiguration configuration) : IAuthService {
+        public async Task<User?> RegisterAsync(RegisterUserDto userDto) {
+            if (await context.Users.AnyAsync(u => u.Username == userDto.Username)) {
+                return null;
+            }
+
+            if (await context.Users.AnyAsync(u => u.Email == userDto.Email)) {
+                return null;
+            }
+
+            var user = new User();
+
+            var hashPassword = new PasswordHasher<User>()
+                .HashPassword(user, userDto.PasswordHash);
+
+            user.Username = userDto.Username;
+            user.PasswordHash = hashPassword;
+            user.Email = userDto.Email;
+
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            return user;
+        }
+
         public async Task<TokenResponseDto?> LoginAsync(LoginUserDto userDto) {
             var user = await context.Users.FirstOrDefaultAsync(u => u.Username == userDto.Username);
 
@@ -34,26 +58,6 @@ namespace UserAuthWebAPI.Repositories {
                 Expires = token.Expires,
                 UserId = user.Id,
             };
-        }
-
-        public async Task<User?> RegisterAsync(RegisterUserDto userDto) {
-            if (await context.Users.AnyAsync(u => u.Username == userDto.Username)) {
-                return null;
-            }
-
-            var user = new User();
-
-            var hashPassword = new PasswordHasher<User>()
-                .HashPassword(user, userDto.PasswordHash);
-
-            user.Username = userDto.Username;
-            user.PasswordHash = hashPassword;
-            user.Email = userDto.Email;
-
-            context.Users.Add(user);
-            context.SaveChanges();
-
-            return user;
         }
 
         public async Task<TokenResponseDto?> RefreshTokensAsync(RefreshTokenRequestDto refreshTokenRequestDto) {

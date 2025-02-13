@@ -14,14 +14,35 @@ namespace UserAuthWebAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController(IAuthService authService) : ControllerBase {
-
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(RegisterUserDto userDto) {
+        public async Task<ActionResult<TokenResponseDto>> Register(RegisterUserDto userDto) {
             var user = await authService.RegisterAsync(userDto);
+
             if (user == null) {
-                return BadRequest("Username already exists.");
+                return BadRequest("Username or email already exists.");
             }
-            return Ok(user);
+
+            LoginUserDto loginUserDto = new() {
+                Username = userDto.Username,
+                PasswordHash = userDto.PasswordHash
+            };
+
+            var result = await authService.LoginAsync(loginUserDto);
+
+            if (result == null) {
+                return BadRequest("Invalid username or password");
+            }
+
+            var token = result.AccessToken;
+
+            Response.Cookies.Append("session", token, new CookieOptions {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(1)
+            });
+
+            return Ok(result);
         }
 
         [HttpPost("login")]

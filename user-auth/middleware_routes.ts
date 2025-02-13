@@ -1,5 +1,6 @@
 export const protectedRoutes = [
-    "/dashboard"
+    "/dashboard",
+    "/logout"
 ];
 
 export const loggedOutRoutes = [
