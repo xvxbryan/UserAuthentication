@@ -1,18 +1,19 @@
 "use server";
 
-import { createSession } from "../lib/session";
-import ILoginRes from "../interfaces/ILoginRes";
 import IActionResponse from "../interfaces/IActionResponse";
-import ILoginFormData from "../interfaces/ILoginFormData";
-import { loginSchema } from "./auth-validation";
+import ILoginRes from "../interfaces/ILoginRes";
+import IRegisterFormData from "../interfaces/IRegisterFormData";
+import { createSession } from "../lib/session";
+import { registerSchema } from "./auth-validation";
 
-export async function login(_: any, formData: FormData): Promise<IActionResponse<ILoginFormData>> {
-    const rawData: ILoginFormData = {
+export async function register(_: any, formData: FormData): Promise<IActionResponse<IRegisterFormData>> {
+    const rawData: IRegisterFormData = {
         username: formData.get("username") as string,
-        passwordHash: formData.get("passwordHash") as string
+        passwordHash: formData.get("passwordHash") as string,
+        email: formData.get("email") as string
     }
 
-    const result = loginSchema.safeParse(rawData);
+    const result = registerSchema.safeParse(rawData);
 
     if (!result.success) {
         return {
@@ -23,7 +24,7 @@ export async function login(_: any, formData: FormData): Promise<IActionResponse
     }
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Auth/login`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Auth/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -33,10 +34,9 @@ export async function login(_: any, formData: FormData): Promise<IActionResponse
         });
 
         if (response.ok) {
-            const loginRes: ILoginRes = await response.json();
-            await createSession(loginRes);
+            const registerRes: ILoginRes = await response.json();
+            await createSession(registerRes);
             return { success: true, inputs: rawData, redirectTo: "/dashboard" };
-
         } else {
             const errorText = await response.text();
             return { success: false, message: errorText, inputs: rawData, }

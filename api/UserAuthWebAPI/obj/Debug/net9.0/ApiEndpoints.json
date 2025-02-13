@@ -97,7 +97,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "UserAuthWebAPI.Models.User",
+        "Type": "UserAuthWebAPI.Dtos.TokenResponseDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
