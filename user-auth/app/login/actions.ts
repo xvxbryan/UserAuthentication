@@ -5,6 +5,7 @@ import ILoginRes from "../interfaces/ILoginRes";
 import IActionResponse from "../interfaces/IActionResponse";
 import ILoginFormData from "../interfaces/ILoginFormData";
 import { loginSchema } from "./auth-validation";
+import successfulLogin from "../lib/successful-login";
 
 export async function login(_: any, formData: FormData): Promise<IActionResponse<ILoginFormData>> {
     const rawData: ILoginFormData = {
@@ -32,15 +33,7 @@ export async function login(_: any, formData: FormData): Promise<IActionResponse
             body: JSON.stringify(result.data),
         });
 
-        if (response.ok) {
-            const loginRes: ILoginRes = await response.json();
-            await createSession(loginRes);
-            return { success: true, inputs: rawData, redirectTo: "/dashboard" };
-
-        } else {
-            const errorText = await response.text();
-            return { success: false, message: errorText, inputs: rawData, }
-        }
+        return await successfulLogin(response, rawData);
     } catch (error) {
         console.log("Error: ", error);
         return { success: false, message: "Unexpected error occured. Please try again.", inputs: rawData, }

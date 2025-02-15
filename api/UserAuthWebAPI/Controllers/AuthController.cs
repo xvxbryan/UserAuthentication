@@ -55,14 +55,9 @@ namespace UserAuthWebAPI.Controllers {
 
             var token = result.AccessToken;
 
-            Response.Cookies.Append("session", token, new CookieOptions {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddDays(1)
-            });
+            Response.Cookies.Append("session", token);
 
-            return Ok(result);
+            return Ok(result.Expires);
         }
 
         [HttpPost("refresh-token")]

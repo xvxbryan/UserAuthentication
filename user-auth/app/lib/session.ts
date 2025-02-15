@@ -6,11 +6,11 @@ export async function getSession() {
     return (await cookies()).get("session");
 }
 
-export async function createSession(loginRes: ILoginRes) {
-    (await cookies()).set("session", loginRes.accessToken, {
+export async function createSession(loginRes: string, cookie: string) {
+    (await cookies()).set("session", cookie, {
         httpOnly: true,
         secure: true,
-        expires: new Date(loginRes.expires),
+        expires: new Date(loginRes),
         sameSite: "none"
     });
 }
