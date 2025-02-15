@@ -1,4 +1,6 @@
-export default interface IRegisterFormData {
+import IFormData from "./IFormData";
+
+export default interface IRegisterFormData extends IFormData {
     username: string;
     passwordHash: string;
     email: string;

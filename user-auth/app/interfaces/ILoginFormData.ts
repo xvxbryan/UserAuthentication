@@ -1,4 +1,6 @@
-export default interface ILoginFormData {
+import IFormData from "./IFormData";
+
+export default interface ILoginFormData extends IFormData {
     username: string;
     passwordHash: string;
 }

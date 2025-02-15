@@ -4,6 +4,7 @@ import IActionResponse from "../interfaces/IActionResponse";
 import ILoginRes from "../interfaces/ILoginRes";
 import IRegisterFormData from "../interfaces/IRegisterFormData";
 import { createSession } from "../lib/session";
+import successfulLogin from "../lib/successful-login";
 import { registerSchema } from "./auth-validation";
 
 export async function register(_: any, formData: FormData): Promise<IActionResponse<IRegisterFormData>> {
@@ -33,14 +34,7 @@ export async function register(_: any, formData: FormData): Promise<IActionRespo
             body: JSON.stringify(result.data),
         });
 
-        if (response.ok) {
-            const registerRes: ILoginRes = await response.json();
-            await createSession(registerRes);
-            return { success: true, inputs: rawData, redirectTo: "/dashboard" };
-        } else {
-            const errorText = await response.text();
-            return { success: false, message: errorText, inputs: rawData, }
-        }
+        return await successfulLogin(response, rawData);
     } catch (error) {
         console.log("Error: ", error);
         return { success: false, message: "Unexpected error occured. Please try again.", inputs: rawData, }
