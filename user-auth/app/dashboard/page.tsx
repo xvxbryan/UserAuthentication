@@ -1,5 +1,3 @@
-import { cookies } from "next/headers";
-
-export default async function Dashboard() {
+export default function Dashboard() {
     return <div>Dashboard</div>;
 }

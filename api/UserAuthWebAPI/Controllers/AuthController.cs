@@ -33,16 +33,7 @@ namespace UserAuthWebAPI.Controllers {
                 return BadRequest("Invalid username or password");
             }
 
-            var token = result.AccessToken;
-
-            Response.Cookies.Append("session", token, new CookieOptions {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddDays(1)
-            });
-
-            return Ok(result);
+            return GenerateTokenResponse(result);
         }
 
         [HttpPost("login")]
@@ -52,22 +43,29 @@ namespace UserAuthWebAPI.Controllers {
             if (result == null) {
                 return BadRequest("Invalid username or password");
             }
-
-            var token = result.AccessToken;
-
-            Response.Cookies.Append("session", token);
-
-            return Ok(result.Expires);
+            return GenerateTokenResponse(result);
         }
 
         [HttpPost("refresh-token")]
-        public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenRequestDto refreshTokenRequestDto) { 
+        public async Task<ActionResult<TokenResponseDto>> RefreshToken(RefreshTokenRequestDto refreshTokenRequestDto) {
             var result = await authService.RefreshTokensAsync(refreshTokenRequestDto);
             if (result is null || result.AccessToken is null || result.RefreshToken is null) {
                 return Unauthorized("Invalid refresh token");
             }
 
-            return Ok(result);
+            //return Ok(result);
+            return GenerateTokenResponse(result);
+        }
+
+        private ActionResult<TokenResponseDto> GenerateTokenResponse(TokenResponseDto result) {
+            Response.Cookies.Append("session", result.AccessToken);
+            Response.Cookies.Append("refresh", result.RefreshToken);
+
+            return Ok(new {
+                accessTokenExpires = result.Expires,
+                refreshTokenExpires = result.RefreshTokenExpires,
+                userId = result.UserId
+            });
         }
 
         [Authorize]

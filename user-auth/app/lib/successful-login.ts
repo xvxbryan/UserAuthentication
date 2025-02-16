@@ -1,18 +1,32 @@
-import IFormData from "../interfaces/IFormData";
+// import IFormData from "../interfaces/IFormData";
 import { createSession } from "./session";
 
-export default async function successfulLogin(response: Response, rawData: IFormData) {
+export default async function successfulLogin(response: Response) {
     if (response.ok) {
-        const getCookie = response.headers.get("set-cookie")?.split("=")[1];
-        const trimCookie = getCookie?.split(";")[0];
-        const loginRes = await response.json();
-        if (!trimCookie) {
-            return { success: false, message: "Unexpected error occured. Please try again.", inputs: rawData, }
+        const cookieStr = response.headers.get("set-cookie");
+        if (cookieStr) {
+            const { session, refresh } = extractTokens(cookieStr);
+            const loginRes = await response.json();
+            if (!session || !refresh) {
+                return false;
+            }
+            await createSession(loginRes, session, refresh);
+            return true;
+        } else {
+            return false;
         }
-        await createSession(loginRes, trimCookie);
-        return { success: true, inputs: rawData, redirectTo: "/dashboard" };
     } else {
-        const errorText = await response.text();
-        return { success: false, message: errorText, inputs: rawData, }
+        // const errorText = await response.text();
+        return false;
     }
+}
+
+function extractTokens(cookieStr: string): { session: string | null; refresh: string | null } {
+    const sessionMatch = cookieStr.match(/session=([^;]+)/);
+    const refreshMatch = cookieStr.match(/refresh=([^;]+)/);
+
+    return {
+        session: sessionMatch ? sessionMatch[1] : null,
+        refresh: refreshMatch ? refreshMatch[1] : null,
+    };
 }
