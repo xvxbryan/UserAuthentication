@@ -50,21 +50,23 @@ namespace UserAuthWebAPI.Repositories {
             return await CreateTokenResponse(user);
         }
 
-        private async Task<TokenResponseDto> CreateTokenResponse(User? user) {
-            var token = CreateToken(user);
-            return new TokenResponseDto {
-                AccessToken = token.Token,
-                RefreshToken = await GenerateAndSaveRefreshTokenAsync(user),
-                Expires = token.Expires,
-                UserId = user.Id,
-            };
-        }
-
         public async Task<TokenResponseDto?> RefreshTokensAsync(RefreshTokenRequestDto refreshTokenRequestDto) {
             var user = await ValidateRefreshTokenAsync(refreshTokenRequestDto.UserId, refreshTokenRequestDto.RefreshToken);
             if (user == null) { return null; }
 
             return await CreateTokenResponse(user);
+        }
+
+        private async Task<TokenResponseDto> CreateTokenResponse(User? user) {
+            var token = CreateToken(user);
+            var refreshToken = await GenerateAndSaveRefreshTokenAsync(user);
+            return new TokenResponseDto {
+                AccessToken = token.Token,
+                RefreshToken = refreshToken,
+                Expires = token.Expires,
+                UserId = user.Id,
+                RefreshTokenExpires = user.RefreshTokenExpireTime
+            };
         }
 
         private async Task<User?> ValidateRefreshTokenAsync(Guid userId, string refreshToken) { 
@@ -80,7 +82,10 @@ namespace UserAuthWebAPI.Repositories {
             var randomNumber = new byte[32];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
+            return Convert.ToBase64String(randomNumber)
+                          .Replace("+", "-")
+                          .Replace("/", "_")
+                          .TrimEnd('=');
         }
 
         private async Task<string> GenerateAndSaveRefreshTokenAsync(User user) {
@@ -103,7 +108,9 @@ namespace UserAuthWebAPI.Repositories {
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
 
-            var expires = DateTime.UtcNow.AddDays(1);
+            //var expires = DateTime.UtcNow.AddDays(1);
+            var expires = DateTime.UtcNow.AddMinutes(20);
+
 
             var tokenDescriptor = new JwtSecurityToken(
                 issuer: configuration.GetValue<string>("AppSettings:Issuer"),
